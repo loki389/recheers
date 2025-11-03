@@ -1,4 +1,15 @@
-# This file ensures Vercel includes all necessary files
-# Empty file means nothing is excluded beyond .gitignore
-
-
+node_modules
+.next
+.git
+*.md
+!README.md
+*.bat
+*.ps1
+*.txt
+*.jpg
+!public/**/*.jpg
+!public/**/*.png
+!public/**/*.svg
+.env*.local
+.DS_Store
+*.log

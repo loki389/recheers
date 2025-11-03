@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ArrowUp, Users, DollarSign, TrendingUp, MapPin, BarChart3, Loader2, RotateCcw, ClipboardList, Sparkles, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,14 @@ const FLAVOR_OPTIONS = [
 export default function Home() {
   const [historyContent, setHistoryContent] =
     useState<HistoryContent | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number | undefined>();
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // 切换逻辑：同值则清空，异值则设置
+  const handleSelectYear = useCallback((y: number) => {
+    setSelectedYear(prev => (prev === y ? null : y));
+  }, []);
+  const handleClearYear = useCallback(() => setSelectedYear(null), []);
   const [metrics, setMetrics] = useState<{
     flavorDistribution?: Array<{ name: string; value: number }>;
     scatterData?: number[][];
@@ -801,7 +807,8 @@ export default function Home() {
             <HistoryTimeline
               items={historyContent.items}
               selectedYear={selectedYear}
-              onSelectYear={(year) => setSelectedYear(year === selectedYear ? undefined : year)}
+              onSelectYear={handleSelectYear}
+              onClearYear={handleClearYear}
               content={historyContent.content}
             />
           </div>

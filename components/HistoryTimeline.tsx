@@ -13,8 +13,9 @@ export interface TimelineItem {
 
 interface HistoryTimelineProps {
   items: TimelineItem[];
-  selectedYear?: number;
+  selectedYear?: number | null;
   onSelectYear?: (year: number) => void;
+  onClearYear?: () => void;
   content?: string; // 完整的历史内容文本
 }
 
@@ -22,9 +23,11 @@ export function HistoryTimeline({
   items,
   selectedYear,
   onSelectYear,
+  onClearYear,
   content = "",
 }: HistoryTimelineProps) {
   const sortedItems = [...items].sort((a, b) => a.year - b.year);
+
 
   // 解析内容，提取每个年份对应的详细内容
   const getYearContent = (year: number, title: string): string => {
@@ -77,7 +80,7 @@ export function HistoryTimeline({
               <div className="relative flex items-start gap-6">
                 {/* Year marker */}
                 <button
-                  onClick={() => onSelectYear?.(isSelected ? undefined : item.year)}
+                  onClick={() => (isSelected ? onClearYear?.() : onSelectYear?.(item.year))}
                   className={cn(
                     "relative z-10 flex items-center justify-center w-16 h-16 rounded-full border-2 bg-background font-bold text-lg transition-all duration-300 ease-out",
                     isSelected
@@ -98,7 +101,7 @@ export function HistoryTimeline({
                 >
                   <CardContent 
                     className="p-6 cursor-pointer"
-                    onClick={() => onSelectYear?.(isSelected ? undefined : item.year)}
+                    onClick={() => (isSelected ? onClearYear?.() : onSelectYear?.(item.year))}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">

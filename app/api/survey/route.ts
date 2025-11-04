@@ -70,14 +70,15 @@ export async function POST(req: NextRequest) {
       message: errorMessage,
       stack: error instanceof Error ? error.stack : undefined,
       envVars: {
-        hasUPSTASH_REDIS_REST_URL: !!process.env.UPSTASH_REDIS_REST_URL,
-        hasUPSTASH_REDIS_REST_TOKEN: !!process.env.UPSTASH_REDIS_REST_TOKEN,
+        hasKV_URL: !!process.env.KV_URL,
+        hasKV_REST_API_URL: !!process.env.KV_REST_API_URL,
+        hasKV_REST_API_TOKEN: !!process.env.KV_REST_API_TOKEN,
       }
     });
     return new Response(
       JSON.stringify({
         error: "Internal server error",
-        details: process.env.NODE_ENV === "development" ? errorMessage : undefined,
+        details: errorMessage,
         hint: "Please check Vercel logs for more details",
       }),
       {

@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       flavors: searchParams.getAll("flavor"),
     };
 
-    // Get survey data from KV storage
+    // Get survey data from KV storage (with fallback to local file)
     const surveyData = await getSurveyData();
 
     // Filter data

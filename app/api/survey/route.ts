@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
-import fs from "fs";
-import path from "path";
+import { addSurveyRecord } from "@/lib/kv";
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,20 +28,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Read existing survey data
-    const dataPath = path.join(process.cwd(), "data", "survey.json");
-    const existingData = JSON.parse(fs.readFileSync(dataPath, "utf8"));
-
-    // Generate new ID
-    const newId = String(existingData.length + 1);
-
     // Get current month in YYYY-MM format
     const now = new Date();
     const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
-    // Create new survey record
-    const newRecord = {
-      id: newId,
+    // Create new survey record (without id, will be generated)
+    const newRecord = await addSurveyRecord({
       ageGroup: body.ageGroup,
       gender: body.gender,
       region: body.region,
@@ -59,19 +50,13 @@ export async function POST(req: NextRequest) {
       },
       topIngredients: body.topIngredients || [],
       month: currentMonth,
-    };
-
-    // Add new record to data
-    existingData.push(newRecord);
-
-    // Write back to file
-    fs.writeFileSync(dataPath, JSON.stringify(existingData, null, 2), "utf8");
+    });
 
     return new Response(
       JSON.stringify({
         success: true,
         message: "Survey submitted successfully",
-        id: newId,
+        id: newRecord.id,
       }),
       {
         status: 200,
@@ -81,10 +66,19 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Error submitting survey:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("Error details:", {
+      message: errorMessage,
+      stack: error instanceof Error ? error.stack : undefined,
+      envVars: {
+        hasUPSTASH_REDIS_REST_URL: !!process.env.UPSTASH_REDIS_REST_URL,
+        hasUPSTASH_REDIS_REST_TOKEN: !!process.env.UPSTASH_REDIS_REST_TOKEN,
+      }
+    });
     return new Response(
       JSON.stringify({
         error: "Internal server error",
         details: process.env.NODE_ENV === "development" ? errorMessage : undefined,
+        hint: "Please check Vercel logs for more details",
       }),
       {
         status: 500,

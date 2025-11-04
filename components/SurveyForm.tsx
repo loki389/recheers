@@ -66,7 +66,10 @@ export function SurveyForm({ onSuccess }: { onSuccess?: () => void }) {
       });
 
       if (!response.ok) {
-        throw new Error("提交失败");
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || errorData.details || `提交失败 (${response.status})`;
+        console.error("Survey submission error:", errorData);
+        throw new Error(errorMessage);
       }
 
       setIsSuccess(true);
@@ -95,7 +98,8 @@ export function SurveyForm({ onSuccess }: { onSuccess?: () => void }) {
       }, 2000);
     } catch (error) {
       console.error("Error submitting survey:", error);
-      alert("提交失败，请稍后重试");
+      const errorMessage = error instanceof Error ? error.message : "提交失败，请稍后重试";
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

@@ -149,3 +149,6 @@ OPENAI_API_KEY=sk-你的DeepSeek密钥
 
 **记住**：使用 DeepSeek API 密钥，不是 OpenAI 的！并且修改后必须重启服务器！
 
+
+
+

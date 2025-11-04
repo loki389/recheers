@@ -126,3 +126,6 @@ echo "OPENAI_API_KEY=你的DeepSeek_API密钥" > .env.local
    - 确保没有引号
    - 格式：`OPENAI_API_KEY=sk-xxxxxxxxxxxx`
 
+
+
+

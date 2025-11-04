@@ -69840,5 +69840,24 @@
     },
     "topIngredients": [],
     "month": "2025-11"
+  },
+  {
+    "id": "3095",
+    "ageGroup": "23-26",
+    "gender": "女",
+    "region": "华东",
+    "frequencyPerWeek": 1,
+    "avgCostPerDrink": 30,
+    "isAlcoholic": true,
+    "flavor": "果香",
+    "tools": {
+      "shaker": true,
+      "jigger": false,
+      "barSpoon": false,
+      "strainer": false,
+      "muddler": false
+    },
+    "topIngredients": [],
+    "month": "2025-11"
   }
 ]

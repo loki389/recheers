@@ -235,15 +235,16 @@ export default function Home() {
             {/* Left side: Logo and Title */}
             <div className="flex items-center gap-3 md:gap-4 flex-shrink-0 group cursor-pointer" onClick={() => scrollToSection("hero")}>
               {/* Logo */}
-              <div className="relative h-10 w-10 md:h-14 md:w-14 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                <div className="absolute inset-0 bg-primary/10 rounded-lg blur-sm group-hover:bg-primary/20 transition-colors"></div>
+              <div className="relative flex-shrink-0 transition-transform duration-300 group-hover:scale-105 h-10 md:h-14 flex items-center justify-center overflow-visible">
+                <div className="absolute inset-0 bg-primary/10 rounded-lg blur-sm group-hover:bg-primary/20 transition-colors -z-10 pointer-events-none"></div>
                 <Image
                   src="/logo.jpg"
                   alt="Logo"
-                  fill
-                  className="object-contain relative z-10 rounded-lg"
+                  width={300}
+                  height={56}
+                  className="object-contain rounded-lg h-full w-auto"
                   priority
-                  sizes="(max-width: 768px) 40px, 56px"
+                  unoptimized
                 />
               </div>
               <div className="flex flex-col">

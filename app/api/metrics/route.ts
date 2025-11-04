@@ -7,6 +7,7 @@ import {
   getToolOwnership,
   getStatistics,
 } from "@/lib/survey";
+import { getSurveyData } from "@/lib/kv";
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,8 +28,11 @@ export async function GET(req: NextRequest) {
       flavors: searchParams.getAll("flavor"),
     };
 
+    // Get survey data from KV storage
+    const surveyData = await getSurveyData();
+
     // Filter data
-    const filteredData = filterSurveyData(filters);
+    const filteredData = filterSurveyData(filters, surveyData);
 
     // Aggregate metrics
     const flavorDistribution = aggregateFlavorDistribution(filteredData);

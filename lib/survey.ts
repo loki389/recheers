@@ -1,5 +1,6 @@
 // Import survey data as a module for Edge Runtime compatibility
-import surveyData from "@/data/survey.json";
+// Fallback to local file for Edge Runtime compatibility
+import surveyDataFallback from "@/data/survey.json";
 
 export interface SurveyRecord {
   id: string;
@@ -45,9 +46,10 @@ export interface FilterParams {
 }
 
 export function filterSurveyData(
-  filters: FilterParams
+  filters: FilterParams,
+  data: SurveyRecord[] = surveyDataFallback as SurveyRecord[]
 ): SurveyRecord[] {
-  let filtered = [...surveyData] as SurveyRecord[];
+  let filtered = [...data];
 
   if (filters.ageGroup) {
     filtered = filtered.filter((r) => r.ageGroup === filters.ageGroup);

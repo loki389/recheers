@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>酒别重逢 - 用户互动社区</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background:#fff; --foreground:#020817; --muted:#f1f5f9; --muted-foreground:#64748b;
+      --card:#fff; --border:#e2e8f0; --primary:#2563eb; --primary-foreground:#f8fafc;
+      --shadow-sm:0 1px 2px rgba(15,23,42,.05); --shadow-md:0 8px 22px rgba(15,23,42,.08); --shadow-lg:0 24px 70px rgba(15,23,42,.15);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:"Noto Sans SC",system-ui,sans-serif;color:var(--foreground);background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);line-height:1.5}
+    button,input,textarea{font:inherit} button{cursor:pointer}.container{width:min(calc(100vw - 32px),1180px);margin-inline:auto}
+    .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(22px);border-bottom:1px solid rgba(226,232,240,.7);box-shadow:var(--shadow-sm)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 0}.brand{display:flex;align-items:center;gap:14px;color:inherit;text-decoration:none}.brand img{width:52px;height:52px;object-fit:contain;border-radius:12px}.brand h1{margin:0;font-size:18px}.brand span{font-size:12px;color:var(--muted-foreground)}
+    .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.nav-link,.outline-btn,.primary-btn{border-radius:10px;min-height:40px;padding:8px 16px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+    .nav-link,.outline-btn{border:1px solid var(--border);background:#fff;color:var(--foreground)}.nav-link:hover,.outline-btn:hover{background:var(--muted)}.primary-btn{border:1px solid var(--primary);background:var(--primary);color:#fff}.primary-btn:hover{background:#1d4ed8}.hidden{display:none!important}
+    .user-chip{display:none;color:var(--muted-foreground);font-size:14px;border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px}
+    .hero{padding:72px 0 42px}.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:end}.hero h2{margin:0 0 14px;font-size:clamp(38px,5vw,62px);line-height:1.08}.hero p{margin:0;color:var(--muted-foreground);font-size:18px;max-width:720px}.community-stats{display:grid;gap:12px}.stat{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:var(--shadow-sm)}.stat strong{font-size:28px;display:block}
+    .layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:24px;padding-bottom:80px;align-items:start}.card{background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-sm)}.card-head{padding:24px}.card-title{margin:0;font-size:24px;font-weight:700}.card-sub{margin:8px 0 0;color:var(--muted-foreground)}
+    .card-body{padding:0 24px 24px}.field{display:grid;gap:8px;margin-bottom:14px}.field label{font-size:14px;font-weight:600}.field input,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;outline:none}.field textarea{min-height:150px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.16)}
+    .locked{padding:22px;border:1px dashed rgba(37,99,235,.35);border-radius:16px;background:rgba(37,99,235,.06);color:var(--muted-foreground)}.post-list{display:grid;gap:16px}.post-card{padding:22px;transition:transform .22s,box-shadow .22s}.post-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}.post-meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted-foreground);font-size:13px;margin-bottom:10px}.post-card h3{margin:0 0 8px;font-size:22px}.post-card p{margin:0;color:var(--muted-foreground);line-height:1.75;white-space:pre-wrap}.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tag{border:1px solid rgba(37,99,235,.18);color:#1d4ed8;background:rgba(37,99,235,.06);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+    .modal{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:24px;background:rgba(15,23,42,.38);backdrop-filter:blur(8px)}.modal.show{display:grid}.modal-card{width:min(100%,440px);padding:28px;background:#fff;border-radius:24px;border:1px solid var(--border);box-shadow:var(--shadow-lg)}.modal-card h2{margin:0 0 8px;font-size:28px}.modal-card p{margin:0 0 18px;color:var(--muted-foreground)}.auth-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:4px;margin:18px 0;border-radius:14px;background:var(--muted)}.auth-tab{border:0;border-radius:10px;padding:9px 10px;background:transparent;color:var(--muted-foreground);font-weight:700}.auth-tab.active{background:#fff;color:var(--foreground);box-shadow:var(--shadow-sm)}.auth-note{font-size:12px;line-height:1.7;color:var(--muted-foreground)}
+    @media(max-width:900px){.hero-grid,.layout{grid-template-columns:1fr}.nav-inner{align-items:flex-start;flex-direction:column}.hero{padding-top:48px}}
+
+    :root{
+      --background:#fffaf4;--foreground:#26140b;--muted:#f3eadf;--muted-foreground:#75685d;
+      --card:rgba(255,252,247,.92);--border:#e6d8c7;--primary:#d59a45;--primary-foreground:#2d170d;
+      --green:#5f8a61;--red:#d75f4d;--shadow-sm:0 1px 2px rgba(75,50,23,.05);
+      --shadow-md:0 16px 38px rgba(75,50,23,.09);--shadow-lg:0 28px 80px rgba(75,50,23,.16);
+    }
+    body{
+      background:
+        linear-gradient(180deg,rgba(255,252,248,.98),rgba(248,239,228,.96)),
+        repeating-linear-gradient(90deg,rgba(104,75,42,.03) 0 1px,transparent 1px 18px);
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";position:fixed;inset:auto 0 0;height:180px;pointer-events:none;opacity:.5;
+      background:linear-gradient(to top,rgba(208,181,145,.45),transparent 78%);
+      z-index:-1;
+    }
+    .container{width:min(calc(100vw - 36px),1040px)}
+    .nav{
+      background:rgba(255,250,244,.94);border-bottom:1px solid rgba(230,216,199,.78);box-shadow:none;
+      backdrop-filter:blur(20px)
+    }
+    .nav-inner{padding:18px 0;align-items:center}
+    .brand img{width:58px;height:58px;border-radius:50%;box-shadow:0 8px 18px rgba(93,58,26,.12)}
+    .brand h1{font-size:30px;letter-spacing:0;color:#1f120b}
+    .brand span{color:#786a5d}
+    .nav-actions{gap:12px}
+    .nav-link,.outline-btn,.primary-btn{border-radius:999px;border-color:var(--border);color:#2c180d}
+    .primary-btn{background:linear-gradient(180deg,#f2c06c,#d89a45);border-color:#d49843;color:#2c180d}
+    .outline-btn,.nav-link{background:rgba(255,255,255,.72)}
+    .user-chip{border-color:var(--border);background:rgba(255,255,255,.72);color:#75685d}
+    .community-main{width:min(100%,720px);margin:0 auto;padding-bottom:92px}
+    .hero{padding:24px 0 18px}
+    .hero-grid{display:block}
+    .hero h2,.hero p,.community-stats{display:none}
+    .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0 16px}
+    .tabs button{border:0;background:transparent;color:#6f6256;font-size:20px;padding:12px 2px;position:relative}
+    .tabs button.active{color:#1f120b;font-weight:700}
+    .tabs button.active::after{content:"";position:absolute;left:50%;bottom:2px;width:34px;height:3px;border-radius:999px;background:#d49a45;transform:translateX(-50%)}
+    .topic-row{display:flex;gap:12px;overflow-x:auto;padding:8px 0 12px;scrollbar-width:none}
+    .topic-row::-webkit-scrollbar{display:none}
+    .topic-chip{border:0;border-radius:999px;background:rgba(245,238,229,.92);color:#2d170d;white-space:nowrap;padding:12px 18px;font-weight:700}
+    .topic-chip.active{background:#f6e5ca;color:#7b4119}
+    .layout{display:grid;grid-template-columns:1fr;gap:18px;padding-bottom:0}
+    .compose-card{order:2}
+    .card{border-radius:8px;border-color:rgba(230,216,199,.9);background:rgba(255,252,247,.9);box-shadow:0 14px 38px rgba(75,50,23,.07)}
+    .card-head{padding:22px}.card-title{font-size:22px;color:#3e2011}.card-sub{color:#75685d}
+    .field input,.field textarea{border-radius:8px;border-color:var(--border);background:rgba(255,255,255,.82)}
+    .locked{border-radius:8px;border-color:rgba(213,154,69,.34);background:rgba(245,231,207,.62)}
+    .post-list{gap:18px}
+    .post-card{padding:0;border-radius:0;border:0;border-bottom:1px solid rgba(230,216,199,.82);box-shadow:none;background:transparent}
+    .post-card:hover{transform:none;box-shadow:none}
+    .post-inner{padding:18px 2px 20px}
+    .post-author{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:start;margin-bottom:12px}
+    .post-author img{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid #fff3e2;box-shadow:0 8px 18px rgba(70,42,18,.12)}
+    .post-author h3{margin:0 0 2px;font-size:20px;color:#20120a}
+    .post-author h3 span{font-size:12px;color:#4d8a59;background:#e5f0e3;border-radius:999px;padding:3px 8px;margin-left:6px;vertical-align:middle}
+    .post-author p{margin:0;color:#7d7064;font-size:14px}
+    .post-time{color:#8a7d70;font-size:14px;white-space:nowrap}
+    .post-copy{margin:0 0 12px;color:#20120a;font-size:19px;line-height:1.6;white-space:pre-wrap}
+    .recipe-mini{display:grid;grid-template-columns:146px 1fr;gap:16px;padding:10px;border:1px solid rgba(230,216,199,.94);border-radius:8px;background:rgba(255,252,247,.78);margin:10px 0 14px}
+    .recipe-art{min-height:106px;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.72),transparent 32%),radial-gradient(circle at 56% 38%,rgba(245,201,104,.9),transparent 20%),linear-gradient(160deg,#3b2a19,#d49737);border:1px solid rgba(255,255,255,.72)}
+    .recipe-mini h4{margin:6px 0 6px;font-size:18px;color:#2d170d}
+    .recipe-mini p{margin:0 0 12px;color:#5f5145}
+    .recipe-stats{display:flex;gap:18px;flex-wrap:wrap;color:#7a6d61;font-size:14px}
+    .recipe-stats b{color:#c65343;font-weight:700}
+    .reply-block{margin-left:26px;padding-left:18px;border-left:1px solid rgba(213,154,69,.28);display:grid;gap:10px}
+    .reply{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:start;padding:10px;border:1px solid rgba(230,216,199,.76);border-radius:8px;background:rgba(255,255,255,.54)}
+    .reply img{width:38px;height:38px;border-radius:50%;object-fit:cover}
+    .reply h4{margin:0 0 2px;font-size:15px}
+    .reply h4 span{color:#4d8a59;font-size:12px;margin-left:4px}
+    .reply p{margin:0;color:#403024;line-height:1.45}
+    .like-pill{border:1px solid rgba(215,95,77,.24);border-radius:8px;padding:8px 12px;color:#d75f4d;background:rgba(255,255,255,.58);font-weight:700}
+    .tag{border-color:rgba(95,138,97,.22);color:#4d7b4f;background:rgba(229,240,227,.72)}
+    .modal-card{border-radius:8px}
+    .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:30;height:66px;border-top:1px solid rgba(230,216,199,.88);background:rgba(255,252,247,.96);display:grid;grid-template-columns:repeat(5,1fr);backdrop-filter:blur(18px)}
+    .bottom-nav a,.bottom-nav button{border:0;background:transparent;text-decoration:none;color:#73675c;font-size:12px;display:grid;place-items:center;gap:2px}
+    .bottom-nav b{font-size:22px;line-height:1;color:#d49a45}
+    @media(min-width:880px){
+      .community-main{width:min(calc(100vw - 48px),1120px)}
+      .layout{grid-template-columns:360px minmax(0,1fr);align-items:start}
+      .compose-card{order:0;position:sticky;top:110px}
+      .hero{padding-top:40px}
+      .tabs{max-width:680px}
+      .bottom-nav{display:none}
+    }
+    @media(max-width:620px){
+      .container{width:min(calc(100vw - 28px),1040px)}
+      .nav-inner{flex-direction:row;gap:10px}
+      .brand span{display:none}.brand h1{font-size:28px}.brand img{width:50px;height:50px}
+      .nav-link,#loginBtn,#logoutBtn,.user-chip{display:none!important}
+      .primary-btn{min-height:44px;padding-inline:16px}
+      .tabs button{font-size:18px}
+      .recipe-mini{grid-template-columns:138px 1fr}
+      .post-copy{font-size:18px}
+      .reply-block{margin-left:24px}
+    }
+
+    .post-card{
+      border:1px solid rgba(230,216,199,.86);
+      border-radius:14px;
+      background:rgba(255,252,247,.88);
+      box-shadow:0 14px 34px rgba(75,50,23,.06);
+      overflow:hidden;
+    }
+    .post-inner{padding:20px}
+    .post-card + .post-card{margin-top:2px}
+    .post-list .locked{box-shadow:0 10px 28px rgba(75,50,23,.06)}
+    .recipe-mini{
+      background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,247,237,.72));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .tabs{
+      position:relative;
+      padding-bottom:4px;
+      border-bottom:1px solid rgba(230,216,199,.65);
+    }
+    .topic-row{margin-bottom:6px}
+    @media(min-width:880px){
+      .post-list{gap:18px}
+      .compose-card{top:126px}
+    }
+    @media(max-width:620px){
+      .post-card{border-radius:12px}
+      .post-inner{padding:16px}
+      .post-author{grid-template-columns:48px 1fr;gap:10px}
+      .post-time{grid-column:2;font-size:12px}
+      .post-author img{width:48px;height:48px}
+      .recipe-mini{grid-template-columns:1fr}
+      .recipe-art{min-height:150px}
+      .reply-block{margin-left:0;padding-left:12px}
+      .like-pill{padding:6px 10px}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.jpg" alt="Logo">
+        <div><h1>酒别重逢</h1><span>配方交流 / 风味反馈 / 非遗共创</span></div>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link" href="index.html">返回首页</a>
+        <span class="user-chip" id="userChip"></span>
+        <button class="primary-btn" type="button" onclick="document.getElementById('postForm').scrollIntoView({behavior:'smooth'})">+ 分享配方</button>
+        <button class="outline-btn" id="loginBtn" type="button">登录 / 注册</button>
+        <button class="outline-btn hidden" id="logoutBtn" type="button">退出</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="community-main">
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <h2>用户互动社区</h2>
+          <p>把用户交流从首页拆出来，单独承载配方分享、调酒反馈、材料替代和项目调研后的持续运营内容。</p>
+        </div>
+        <div class="community-stats">
+          <div class="stat"><strong id="postCount">0</strong><span>社区内容</span></div>
+          <div class="stat"><strong>3</strong><span>互动方向：配方 / 工具 / 口味</span></div>
+        </div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="社区内容分类">
+        <button type="button">关注</button>
+        <button class="active" type="button">推荐</button>
+        <button type="button">最新</button>
+        <button type="button">精华</button>
+        <button type="button">问答</button>
+      </div>
+      <div class="topic-row" aria-label="热门话题">
+        <button class="topic-chip active" type="button">热门</button>
+        <button class="topic-chip" type="button">非遗传承</button>
+        <button class="topic-chip" type="button">调酒技巧</button>
+        <button class="topic-chip" type="button">风味灵感</button>
+        <button class="topic-chip" type="button">材料替代</button>
+      </div>
+    </section>
+
+    <section class="container layout">
+      <form id="postForm" class="card compose-card">
+        <div class="card-head">
+          <p class="card-title">发布交流内容</p>
+          <p class="card-sub">登录后可以分享你的自调酒配方、工具替代经验或口味反馈。</p>
+        </div>
+        <div class="card-body">
+          <div id="postLocked" class="locked">当前未登录。请先登录或注册，再发布社区内容。</div>
+          <div id="postFields" class="hidden">
+            <div class="field"><label for="postTitle">标题</label><input id="postTitle" placeholder="例如：宿舍版金汤力替代方案"></div>
+            <div class="field"><label for="postBody">内容</label><textarea id="postBody" placeholder="记录比例、口味、工具、材料替代或踩坑经验"></textarea></div>
+            <div class="field"><label for="postTags">标签</label><input id="postTags" placeholder="用逗号分隔，例如：清爽,低酒精,无摇壶"></div>
+            <button class="primary-btn" type="submit">发布</button>
+          </div>
+        </div>
+      </form>
+      <div class="post-list" id="postList"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="移动端底部导航">
+    <a href="index.html"><b>⌂</b><span>首页</span></a>
+    <a href="index.html#visualization"><b>◇</b><span>探索</span></a>
+    <button type="button" onclick="document.getElementById('postForm').scrollIntoView({behavior:'smooth'})"><b>＋</b><span>发布</span></button>
+    <button type="button"><b>□</b><span>消息</span></button>
+    <button type="button" id="mobileLoginBtn"><b>○</b><span>我的</span></button>
+  </nav>
+
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <form class="modal-card" id="authForm">
+      <h2>账号入口</h2>
+      <p>使用账号和密码登录，或注册新账号参与社区发布。</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" type="button" data-auth-mode="login">登录</button>
+        <button class="auth-tab" type="button" data-auth-mode="register">注册</button>
+      </div>
+      <div class="auth-panel" data-panel="login">
+        <div class="field"><label for="loginName">账号</label><input id="loginName" placeholder="请输入账号"></div>
+        <div class="field"><label for="loginPass">密码</label><input id="loginPass" type="password" placeholder="请输入密码"></div>
+      </div>
+      <div class="auth-panel hidden" data-panel="register">
+        <div class="field"><label for="registerName">账号</label><input id="registerName" placeholder="设置账号"></div>
+        <div class="field"><label for="registerPass">密码</label><input id="registerPass" type="password" placeholder="设置密码"></div>
+      </div>
+      <div class="auth-note" id="authMessage"></div>
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+        <button class="outline-btn" id="closeLogin" type="button">取消</button>
+        <button class="primary-btn" id="authSubmit" type="submit">登录</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const TOKEN_KEY = "recheers.auth.token";
+    const USER_KEY = "recheers.current.user";
+    let authToken = localStorage.getItem(TOKEN_KEY) || "";
+    let currentUser = JSON.parse(localStorage.getItem(USER_KEY) || "null");
+    let posts = [];
+    let authMode = "login";
+    const seedPosts = [
+      {
+        author: "梅子酱",
+        title: "桂花弄影",
+        badge: "非遗传承人",
+        bio: "擅长：草本风味 | 传承桂花酿",
+        body: "我也超爱桂花酒！这个配方太治愈了。微微的甜，回口是桂花的香，像是把秋天喝进了心里。",
+        recipe: "桂花 · 陈皮 · 茉莉 · 糯米酒",
+        heat: "9,832",
+        copies: "1,287",
+        likes: "632",
+        replies: [
+          ["江南小调", "复刻成功！桂花香气很优雅，感谢分享。", "56"],
+          ["梅子酱", "新会陈皮点睛了，下次可以试试。", "23"]
+        ],
+        tags: ["桂花", "陈皮", "清甜"],
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "酒旅人阿Ken",
+        title: "青梅叙",
+        badge: "资深调酒师",
+        bio: "擅长：酸甜平衡 | 旅行爱好者",
+        body: "这款酒的灵感来自宋代《北山酒经》记载的“蜜渍法”，没想到古人的智慧这么绝。",
+        recipe: "青梅 · 蜂蜜 · 米酒 · 柠檬",
+        heat: "7,521",
+        copies: "982",
+        likes: "451",
+        replies: [
+          ["小满", "酸甜刚刚好，夏天必备。", "63"],
+          ["酒旅人阿Ken", "哈哈哈太会形容了，谢谢喜欢。", "21"]
+        ],
+        tags: ["青梅", "低度", "酸甜"],
+        createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        author: "老酒铺掌柜Leo",
+        title: "柚见东方",
+        badge: "非遗传承人",
+        bio: "传承三代 | 专注米酒与果酒",
+        body: "复刻了你的配方，整体平衡感很好，如果柚子皮再处理得更薄一些，香气会更通透。",
+        recipe: "柚子 · 米酒 · 茶汤 · 蜂蜜",
+        heat: "5,187",
+        copies: "646",
+        likes: "318",
+        replies: [
+          ["梅子酱", "收到！下次会把白瓤去得更干净。", "44"]
+        ],
+        tags: ["柚子", "茶香", "米酒"],
+        createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+    async function api(path, options = {}) {
+      const response = await fetch(path, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+          ...(options.headers || {})
+        }
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "请求失败");
+      return data;
+    }
+    function escapeHtml(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char]));}
+    function openLogin(){ $("#loginModal").classList.add("show"); $("#loginModal").setAttribute("aria-hidden","false"); }
+    function closeLogin(){ $("#loginModal").classList.remove("show"); $("#loginModal").setAttribute("aria-hidden","true"); }
+    function setAuthMode(mode){authMode=mode;$$(".auth-tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.authMode===mode));$$(".auth-panel").forEach(panel=>panel.classList.toggle("hidden",panel.dataset.panel!==mode));$("#authSubmit").textContent=mode==="register"?"注册":"登录";$("#authMessage").textContent="";}
+    function setCurrentUser(user, token){currentUser=user;if(token){authToken=token;localStorage.setItem(TOKEN_KEY,token);}localStorage.setItem(USER_KEY,JSON.stringify(currentUser));closeLogin();updateAuthUI();}
+    function updateAuthUI(){const loggedIn=Boolean(currentUser);$("#loginBtn").classList.toggle("hidden",loggedIn);$("#logoutBtn").classList.toggle("hidden",!loggedIn);$("#userChip").style.display=loggedIn?"inline-flex":"none";$("#userChip").textContent=loggedIn?`已登录：${currentUser.name}`:"";$("#postLocked").classList.toggle("hidden",loggedIn);$("#postFields").classList.toggle("hidden",!loggedIn);}
+    function relativeTime(iso){const diff=Math.max(1,Math.round((Date.now()-new Date(iso).getTime())/3600000));return diff<24?`${diff}小时前`:`${Math.round(diff/24)}天前`;}
+    function renderPosts(){
+      const all=posts.length?posts:seedPosts;
+      $("#postCount").textContent=all.length;
+      $("#postList").innerHTML=all.map((post,index)=>{
+        const tags=(post.tags||[]).map(tag=>`<span class="tag">${escapeHtml(tag)}</span>`).join("");
+        const replies=(post.replies||[]).map(([name,copy,likes])=>`<div class="reply"><img src="logo.jpg" alt=""><div><h4>${escapeHtml(name)} <span>作者</span></h4><p>${escapeHtml(copy)}</p></div><span class="like-pill">${escapeHtml(likes)}</span></div>`).join("");
+        const recipe=post.recipe||((post.tags||[]).length?post.tags.join(" · "):"清爽 · 低度 · 易复刻");
+        const heat=post.heat||"1,284";
+        const copies=post.copies||"328";
+        const likes=post.likes||"86";
+        return `<article class="post-card"><div class="post-inner">
+          <div class="post-author"><img src="logo.jpg" alt=""><div><h3>${escapeHtml(post.author||"匿名用户")} <span>${escapeHtml(post.badge||"创作者")}</span></h3><p>${escapeHtml(post.bio||"分享自调酒配方与复刻心得")}</p></div><time class="post-time">${relativeTime(post.createdAt||new Date().toISOString())}</time></div>
+          <p class="post-copy">${escapeHtml(post.body||post.title)}</p>
+          <div class="recipe-mini"><div class="recipe-art" aria-hidden="true"></div><div><h4>${escapeHtml(post.title||`风味灵感 ${index+1}`)}</h4><p>${escapeHtml(recipe)}</p><div class="recipe-stats"><span><b>${escapeHtml(heat)}</b> 热度</span><span>${escapeHtml(copies)} 复刻</span><span>${escapeHtml(likes)} 喜欢</span></div></div></div>
+          <div class="tag-row">${tags}</div>
+          <div class="reply-block">${replies}</div>
+        </div></article>`;
+      }).join("");
+    }
+    async function loadPosts(){try{const data=await api("/api/community/posts");posts=data.posts||[];renderPosts();}catch(error){posts=[];renderPosts();}}
+    $("#loginBtn").addEventListener("click",openLogin);$("#mobileLoginBtn").addEventListener("click",openLogin);$("#closeLogin").addEventListener("click",closeLogin);$("#loginModal").addEventListener("click",event=>{if(event.target.id==="loginModal")closeLogin();});$$(".auth-tab").forEach(tab=>tab.addEventListener("click",()=>setAuthMode(tab.dataset.authMode)));
+    $("#authForm").addEventListener("submit",async event=>{event.preventDefault();try{let data;if(authMode==="register"){data=await api("/api/auth/register",{method:"POST",body:JSON.stringify({name:$("#registerName").value.trim(),password:$("#registerPass").value})});}else{data=await api("/api/auth/login",{method:"POST",body:JSON.stringify({name:$("#loginName").value.trim(),password:$("#loginPass").value})});}setCurrentUser(data.user,data.token);}catch(error){$("#authMessage").textContent=error.message;}});
+    $("#logoutBtn").addEventListener("click",async()=>{try{await api("/api/auth/logout",{method:"POST"});}catch{}currentUser=null;authToken="";localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);updateAuthUI();});
+    $("#postForm").addEventListener("submit",async event=>{event.preventDefault();if(!currentUser){openLogin();return;}const title=$("#postTitle").value.trim();const body=$("#postBody").value.trim();const tags=$("#postTags").value.split(/[，,]/).map(tag=>tag.trim()).filter(Boolean);if(!title||!body)return;try{await api("/api/community/posts",{method:"POST",body:JSON.stringify({title,body,tags})});$("#postTitle").value="";$("#postBody").value="";$("#postTags").value="";await loadPosts();}catch(error){alert(error.message);}});
+    updateAuthUI();loadPosts();
+  </script>
+</body>
+</html>

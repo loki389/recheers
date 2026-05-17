@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": "066635db-5bea-410b-9713-163b26c1ba67",
+      "name": "loki82576@gmail.com",
+      "phone": "",
+      "salt": "47f889196c6bdcc863ff8de3866cfb98",
+      "passwordHash": "b5ed6d6b64a94c7e97dab8e8d8795094807b74055c8724396d23e9f34e53b2a9b441ed5b5f0355ae603b162797cd385408f69039dd94bee646e841e21f383d5a",
+      "createdAt": "2026-05-17T12:28:10.426Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "c48275733b9adf4299b95e99686613f34ad0cc45c43843c2081040db2a91a30f",
+      "userId": "066635db-5bea-410b-9713-163b26c1ba67",
+      "createdAt": "2026-05-17T12:28:10.426Z",
+      "expiresAt": 1780230490426
+    }
+  ],
+  "smsCodes": [],
+  "posts": [
+    {
+      "id": "2ed3e1ee-2c47-4601-8dc1-ec65405511a4",
+      "author": "loki82576@gmail.com",
+      "userId": "066635db-5bea-410b-9713-163b26c1ba67",
+      "title": "宿舍好喝分享！！",
+      "body": "565",
+      "tags": [
+        "122",
+        "12"
+      ],
+      "createdAt": "2026-05-17T12:28:59.133Z"
+    }
+  ],
+  "samples": [
+    {
+      "id": "01412ab2-8a73-47c9-ac16-28c8feaa163a",
+      "age": "18-22",
+      "gender": "男",
+      "region": "华北",
+      "freq": 2,
+      "cost": 31,
+      "flavor": "清爽",
+      "alcohol": true,
+      "tool": "摇壶",
+      "ingredient": "柠檬",
+      "createdAt": "2026-05-14T03:12:46.856Z"
+    },
+    {
+      "id": "da1a74e7-d537-4f09-9bdb-ccc2aeacb594",
+      "age": "18-22",
+      "gender": "男",
+      "region": "华北",
+      "freq": 2,
+      "cost": 31,
+      "flavor": "清爽",
+      "alcohol": true,
+      "tool": "摇壶",
+      "ingredient": "柠檬",
+      "createdAt": "2026-05-14T03:12:51.869Z"
+    }
+  ]
+}
